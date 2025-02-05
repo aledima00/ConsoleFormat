@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "consoleformat"
+version = "0.1.0"
+description = "AboutDead simple tool for ✨ Console formatting in python ✨"
+authors = ["Alessandro Di Matteo <aledimatteo00@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/aledima00/ConsoleFormat"
+repository = "https://github.com/aledima00/ConsoleFormat"
+keywords = ["python","console","formatting"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+colorama = "^0.4.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
