@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "consoleformat"
-version = "0.1.0"
+version = "0.1.2"
 description = "AboutDead simple tool for ✨ Console formatting in python ✨"
 authors = ["Alessandro Di Matteo <aledimatteo00@gmail.com>"]
 license = "MIT"
