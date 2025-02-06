@@ -1,9 +1,10 @@
-from colorama import Fore, Back, Style
+from colorama import Fore as _F, Back as _B, Style as _S
+from colorama.ansi import AnsiFore as _AF, AnsiBack as _AB, AnsiStyle as _AS
 from typing import List as _List, Tuple as _Tuple
 
-_FORE_ALLOWED_VALUES =  [Fore.BLACK, Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.BLUE, Fore.MAGENTA, Fore.CYAN, Fore.WHITE]
-_BACK_ALLOWED_VALUES =  [Back.BLACK, Back.RED, Back.GREEN, Back.YELLOW, Back.BLUE, Back.MAGENTA, Back.CYAN, Back.WHITE]
-_STYLE_ALLOWED_VALUES = [Style.DIM, Style.NORMAL, Style.BRIGHT]
+_FORE_ALLOWED_VALUES =  [_F.BLACK, _F.RED, _F.GREEN, _F.YELLOW, _F.BLUE, _F.MAGENTA, _F.CYAN, _F.WHITE]
+_BACK_ALLOWED_VALUES =  [_B.BLACK, _B.RED, _B.GREEN, _B.YELLOW, _B.BLUE, _B.MAGENTA, _B.CYAN, _B.WHITE]
+_STYLE_ALLOWED_VALUES = [_S.DIM, _S.NORMAL, _S.BRIGHT]
 
 class Formatted:
     _lines:_List[_Tuple[int,str]]
@@ -14,9 +15,9 @@ class Formatted:
     _expand_tabs_value:int
 
     def __init__(self,expand_tabs_value:int=3):
-        self._style = [Style.NORMAL]
-        self._fore = [Fore.WHITE]
-        self._back = [Back.BLACK]
+        self._style = [_S.NORMAL]
+        self._fore = [_F.WHITE]
+        self._back = [_B.BLACK]
         self._lines = [(0,"")]
         self._expand_tabs_value = expand_tabs_value
     
@@ -39,12 +40,12 @@ class Formatted:
         self._lines.append((indt, ""))
         return self
     
-    def __raw_append(self,text:str):
+    def __raw_append(self,text):
         indt, line = self._lines[-1]
         line += text
         self._lines[-1] = (indt, line)
 
-    def append(self, text:str,*,fore=None,back=None,style=None):
+    def append(self, text:str,*,fore:_AF|None=None,back:_AF|None=None,style:_AS|None=None):
         if fore is not None:
             self._fore.append(fore)
             self.__raw_append(fore)
@@ -63,17 +64,17 @@ class Formatted:
             self.dropStyle()
         return self
     
-    def fore(self,color:str):
+    def fore(self,color:_AF):
         assert color in _FORE_ALLOWED_VALUES, f"Invalid fore color: {color}"
         self._fore.append(color)
         self.__raw_append(color)
         return self
-    def back(self,color:str):
+    def back(self,color:_AB):
         assert color in _BACK_ALLOWED_VALUES, f"Invalid back color: {color}"
         self._back.append(color)
         self.__raw_append(color)
         return self
-    def style(self,style:str):
+    def style(self,style:_AS):
         assert style in _STYLE_ALLOWED_VALUES, f"Invalid style: {style}"
         self._style.append(style)
         self.__raw_append(style)
@@ -92,29 +93,14 @@ class Formatted:
         self.__raw_append(self._style[-1])
         return self
     
-
-    def concatenate(self,formatted:"Formatted",*,inline=True):
-        base_indt,base_text = self._lines[-1]
-        numlines = len(formatted._lines)
-        for n in range(numlines):
-            indt,text = formatted._lines[n]
-            if n!=0 or (not inline):
-                self._lines.append((base_indt+indt,text))
-            else:
-                self._lines[-1] = (base_indt+indt, base_text+text)
-        self._fore = formatted._fore
-        self._back = formatted._back
-        self._style = formatted._style
-        return self
-    
     def reset(self):
-        self.append(Style.RESET_ALL)
-        self._style = Style.NORMAL
-        self._fore = Fore.WHITE
-        self._back = Back.BLACK
+        self.append(_S.RESET_ALL)
+        self._style = _S.NORMAL
+        self._fore = _F.WHITE
+        self._back = _B.BLACK
 
     def __str__(self):
-        delim = f"{Fore.RESET}{Back.RESET}{Style.RESET_ALL}"
+        delim = f"{_F.RESET}{_B.RESET}{_S.RESET_ALL}"
         ret = ""
         for indt, text in self._lines:
             ret += f"\t"*indt + text + f"\n"
