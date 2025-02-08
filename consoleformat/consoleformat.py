@@ -102,8 +102,10 @@ class Formatted:
     def __str__(self):
         delim = f"{_F.RESET}{_B.RESET}{_S.RESET_ALL}"
         ret = ""
-        for indt, text in self._lines:
-            ret += f"\t"*indt + text + f"\n"
+        for i,(indt, text) in enumerate(self._lines):
+            ret += "\t"*indt + text
+            if i != len(self._lines)-1:
+                ret += "\n"
         ret = ret.expandtabs(self._expand_tabs_value)
         return delim + ret + delim
     
